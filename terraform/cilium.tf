@@ -80,9 +80,19 @@ resource "helm_release" "cilium" {
     value = "true"
   }
 
+  set {
+    name  = "ipam.operator.clusterPoolIPv4MaskSize"
+    value = 24
+  }
+
   set_list {
     name  = "ipam.operator.clusterPoolIPv4PodCIDRList"
     value = [var.spec.cluster.pod_cidrs.0]
+  }
+
+  set {
+    name  = "ipam.operator.clusterPoolIPv6MaskSize"
+    value = 64
   }
 
   set_list {

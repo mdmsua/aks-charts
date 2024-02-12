@@ -1,6 +1,6 @@
 data "terraform_remote_state" "cluster" {
   backend   = "remote"
-  workspace = "adpvwg"
+  workspace = terraform.workspace
   config = {
     organization = "Exatron"
     workspaces = {
