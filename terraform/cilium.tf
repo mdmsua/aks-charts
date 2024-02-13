@@ -1,3 +1,9 @@
+resource "kubernetes_manifest" "gateway_api_crd" {
+  for_each        = local.gateway_api_crd
+  manifest        = each.value
+  computed_fields = ["metadata.creationTimestamp"]
+}
+
 resource "helm_release" "cilium" {
   name             = "cilium"
   repository       = "https://helm.cilium.io"
@@ -27,7 +33,7 @@ resource "helm_release" "cilium" {
 
   set {
     name  = "gatewayAPI.enabled"
-    value = "false"
+    value = "true"
   }
 
   set {
@@ -99,4 +105,16 @@ resource "helm_release" "cilium" {
     name  = "ipam.operator.clusterPoolIPv6PodCIDRList"
     value = [var.spec.cluster.pod_cidrs.1]
   }
+
+  set {
+    name  = "k8sServiceHost"
+    value = local.cluster_host
+  }
+
+  set {
+    name  = "k8sServicePort"
+    value = local.cluster_port
+  }
+
+  depends_on = [kubernetes_manifest.gateway_api_crd]
 }
