@@ -32,7 +32,7 @@ provider "kubernetes" {
       "--server-id",
       "6dae42f8-4368-4678-94ff-3960e28e3630",
       "--login",
-      "azurecli"
+      "msi"
     ]
   }
 }
@@ -49,7 +49,7 @@ provider "helm" {
         "--server-id",
         "6dae42f8-4368-4678-94ff-3960e28e3630",
         "--login",
-        "azurecli"
+        "msi"
       ]
     }
   }
