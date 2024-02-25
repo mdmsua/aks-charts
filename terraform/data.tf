@@ -1,10 +1,9 @@
 data "terraform_remote_state" "cluster" {
-  backend   = "remote"
-  workspace = terraform.workspace
+  backend = "remote"
   config = {
     organization = "Exatron"
     workspaces = {
-      prefix = "byocni-"
+      name = "byocni-mngenv"
     }
   }
 }

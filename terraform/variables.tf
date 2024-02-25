@@ -13,3 +13,10 @@ variable "spec" {
     })
   })
 }
+
+variable "operator" {
+  type = object({
+    token = string
+  })
+  sensitive = true
+}

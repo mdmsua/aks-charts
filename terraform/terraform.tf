@@ -1,4 +1,5 @@
 terraform {
+  cloud {}
   required_providers {
     helm = {
       source  = "hashicorp/helm"
@@ -11,12 +12,6 @@ terraform {
     http = {
       source  = "hashicorp/http"
       version = "~>3.0"
-    }
-  }
-  backend "remote" {
-    organization = "Exatron"
-    workspaces {
-      prefix = "charts-"
     }
   }
 }
