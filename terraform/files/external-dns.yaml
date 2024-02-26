@@ -1,0 +1,16 @@
+env:
+  - name: CF_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: ${secret_name}
+        key: ${secret_key}
+
+sources:
+  - gateway-grpcroute
+  - gateway-httproute
+  - gateway-tcproute
+  - gateway-tlsroute
+  - gateway-udproute
+
+provider:
+  name: cloudflare

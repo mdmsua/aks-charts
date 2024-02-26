@@ -4,6 +4,21 @@ resource "kubernetes_namespace_v1" "external_dns" {
   }
 }
 
+locals {
+  api_token_key = "api-token"
+}
+
+resource "kubernetes_secret_v1" "cloudflare" {
+  metadata {
+    name      = "cloudflare"
+    namespace = kubernetes_namespace_v1.external_dns.metadata.0.name
+  }
+  data = {
+    "${local.api_token_key}" = var.secrets.cloudflare_api_token
+  }
+}
+
+
 resource "helm_release" "external_dns" {
   name             = "external-dns"
   repository       = "https://kubernetes-sigs.github.io/external-dns"
@@ -16,20 +31,10 @@ resource "helm_release" "external_dns" {
   reuse_values     = true
   wait             = true
 
-  set_sensitive {
-    name  = "env.CF_API_TOKEN"
-    value = var.spec.secrets.cloudflare_api_token
-  }
-
-  set_list {
-    name = "args"
-    value = [
-      "--provider=cloudflare",
-      "--source=gateway-httproute",
-      "--source=gateway-tlsroute",
-      "--source=gateway-tcproute",
-      "--source=gateway-udproute",
-      "--source=gateway-grpcroute",
-    ]
-  }
+  values = [
+    templatefile("${path.module}/files/external-dns.yaml", {
+      secret_name = kubernetes_secret_v1.cloudflare.metadata.0.name,
+      secret_key  = local.api_token_key
+    })
+  ]
 }
