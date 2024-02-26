@@ -2,6 +2,8 @@ resource "kubernetes_namespace_v1" "external_dns" {
   metadata {
     name = "external-dns"
   }
+
+  depends_on = [helm_release.cilium]
 }
 
 locals {
@@ -16,6 +18,8 @@ resource "kubernetes_secret_v1" "cloudflare" {
   data = {
     "${local.api_token_key}" = var.secrets.cloudflare_api_token
   }
+
+  depends_on = [helm_release.cilium]
 }
 
 
@@ -37,4 +41,6 @@ resource "helm_release" "external_dns" {
       secret_key  = local.api_token_key
     })
   ]
+
+  depends_on = [helm_release.cilium]
 }

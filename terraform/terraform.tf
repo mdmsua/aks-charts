@@ -1,5 +1,11 @@
 terraform {
-  cloud {}
+  cloud {
+    organization = "Exatron"
+    workspaces {
+      project = "k8s"
+      tags    = ["byocni"]
+    }
+  }
   required_providers {
     helm = {
       source  = "hashicorp/helm"

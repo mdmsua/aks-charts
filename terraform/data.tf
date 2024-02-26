@@ -3,7 +3,7 @@ data "terraform_remote_state" "cluster" {
   config = {
     organization = "Exatron"
     workspaces = {
-      name = "byocni-mngenv"
+      name = "byocni-${var.name}"
     }
   }
 }
