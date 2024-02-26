@@ -10,7 +10,7 @@ resource "kubernetes_secret_v1" "operator" {
     namespace = kubernetes_namespace_v1.operator.metadata.0.name
   }
   data = {
-    token = var.operator.token
+    token = var.secrets.terraform_api_token
   }
 }
 

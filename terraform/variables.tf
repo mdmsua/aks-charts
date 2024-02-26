@@ -10,13 +10,20 @@ variable "spec" {
       cilium = object({
         version = string
       })
+      external_dns = object({
+        version = string
+      })
+      cert_manager = object({
+        version = string
+      })
     })
   })
 }
 
-variable "operator" {
+variable "secrets" {
   type = object({
-    token = string
+    cloudflare_api_token = string
+    terraform_api_token  = string
   })
   sensitive = true
 }
