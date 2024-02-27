@@ -30,6 +30,13 @@ resource "helm_release" "main" {
     name  = "installCRDs"
     value = "true"
   }
+
+  set {
+    name = "extraArgs"
+    value = [
+      "--feature-gates=ExperimentalGatewayAPISupport=true"
+    ]
+  }
 }
 
 /* 
