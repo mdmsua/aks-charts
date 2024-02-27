@@ -4,7 +4,7 @@ resource "kubernetes_manifest" "gateway_api_crd" {
   computed_fields = ["metadata.creationTimestamp"]
 }
 
-resource "helm_release" "cilium" {
+resource "helm_release" "main" {
   name             = "cilium"
   repository       = "https://helm.cilium.io"
   chart            = "cilium"
@@ -14,7 +14,7 @@ resource "helm_release" "cilium" {
   cleanup_on_fail  = true
   reuse_values     = true
   wait             = true
-  version          = var.spec.charts.cilium.version
+  version          = var.cilium.version
 
   set {
     name  = "aksbyocni.enabled"
@@ -63,12 +63,12 @@ resource "helm_release" "cilium" {
 
   set {
     name  = "cluster.id"
-    value = tostring(var.spec.cluster.id)
+    value = tostring(var.cluster.id)
   }
 
   set {
     name  = "cluster.name"
-    value = var.spec.project
+    value = var.cluster.name
   }
 
   set {
@@ -93,7 +93,7 @@ resource "helm_release" "cilium" {
 
   set_list {
     name  = "ipam.operator.clusterPoolIPv4PodCIDRList"
-    value = [var.spec.cluster.pod_cidrs.0]
+    value = [var.cluster.pod_cidrs.0]
   }
 
   set {
@@ -103,7 +103,7 @@ resource "helm_release" "cilium" {
 
   set_list {
     name  = "ipam.operator.clusterPoolIPv6PodCIDRList"
-    value = [var.spec.cluster.pod_cidrs.1]
+    value = [var.cluster.pod_cidrs.1]
   }
 
   set {

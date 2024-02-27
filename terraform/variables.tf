@@ -18,6 +18,11 @@ variable "spec" {
         version = string
       })
       cert_manager = object({
+        version    = string
+        email      = string
+        production = bool
+      })
+      cloud_operator = object({
         version = string
       })
     })
