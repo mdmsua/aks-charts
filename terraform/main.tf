@@ -3,9 +3,9 @@ module "cilium" {
   cilium = var.spec.charts.cilium
 
   cluster = {
-    host      = trimprefix(data.terraform_remote_state.cluster.outputs.host, "https://")
-    name      = var.spec.project
     id        = var.spec.cluster.id
+    name      = var.spec.project
+    host      = trimprefix(data.terraform_remote_state.cluster.outputs.host, "https://")
     pod_cidrs = var.spec.cluster.pod_cidrs
   }
 }
@@ -23,6 +23,10 @@ module "cert_manager" {
   cloudflare_api_token = var.secrets.cloudflare_api_token
   cert_manager         = var.spec.charts.cert_manager
 
+  providers = {
+    kubectl = kubectl
+  }
+
   depends_on = [module.cilium]
 }
 
@@ -30,5 +34,6 @@ module "cloud_operator" {
   source              = "./modules/cloud-operator"
   terraform_api_token = var.secrets.terraform_api_token
   cloud_operator      = var.spec.charts.cloud_operator
-  depends_on          = [module.cilium]
+
+  depends_on = [module.cilium]
 }
