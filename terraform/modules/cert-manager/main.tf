@@ -32,10 +32,8 @@ resource "helm_release" "main" {
   }
 
   set {
-    name = "extraArgs"
-    value = [
-      "--feature-gates=ExperimentalGatewayAPISupport=true"
-    ]
+    name  = "extraArgs"
+    value = "--feature-gates=ExperimentalGatewayAPISupport=true"
   }
 }
 
