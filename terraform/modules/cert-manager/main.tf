@@ -1,9 +1,3 @@
-resource "kubernetes_manifest" "crd" {
-  for_each        = local.crds
-  manifest        = each.value
-  computed_fields = ["metadata.creationTimestamp"]
-}
-
 resource "kubernetes_namespace_v1" "main" {
   metadata {
     name = "cert-manager"
@@ -32,8 +26,12 @@ resource "helm_release" "main" {
   reuse_values     = true
   wait             = true
 
-  depends_on = [kubernetes_manifest.crd]
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
 }
+
 
 resource "kubernetes_manifest" "cluster_issuer" {
   manifest = {
